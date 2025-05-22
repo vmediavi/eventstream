@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Table (Kafka + SSE)</title>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+    </style>
+</head>
+<body>
+<h2>Live Table</h2>
+<table>
+    <thead><tr><th>ID</th><th>Name</th></tr></thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+    const tableBody = document.getElementById('tableBody');
+    const records = {};
+
+    function render() {
+      tableBody.innerHTML = '';
+      Object.values(records).forEach(r => {
+        tableBody.innerHTML += `<tr><td>${r.id}</td><td>${r.name}</td></tr>`;
+      });
+    }
+
+    const source = new EventSource('/events');
+
+    source.addEventListener('new', event => {
+      const data = JSON.parse(event.data);
+      records[data.id] = data;
+      render();
+    });
+
+    source.addEventListener('update', event => {
+      const data = JSON.parse(event.data);
+      records[data.id] = data;
+      render();
+    });
+
+    source.addEventListener('delete', event => {
+      const data = JSON.parse(event.data);
+      delete records[data.id];
+      render();
+    });
+
+    source.onerror = e => console.error('SSE Error', e);
+</script>
+</body>
+</html>

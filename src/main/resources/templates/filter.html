@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka + SSE Table</title>
+    <style>
+        table, th, td { border: 1px solid #ccc; padding: 6px; border-collapse: collapse; }
+        input { margin: 10px 5px; }
+    </style>
+</head>
+<body>
+<h2>Live Kafka Records</h2>
+<input type="text" id="filterInput" placeholder="Filter by name...">
+<select id="sortSelect">
+    <option value="id">Sort by ID</option>
+    <option value="name">Sort by Name</option>
+</select>
+<table>
+    <thead><tr><th>ID</th><th>Name</th></tr></thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+    const tableBody = document.getElementById('tableBody');
+    const filterInput = document.getElementById('filterInput');
+    const sortSelect = document.getElementById('sortSelect');
+
+    const records = new Map();
+
+    function render() {
+      const filter = filterInput.value.toLowerCase();
+      const sortBy = sortSelect.value;
+
+      const sortedRecords = Array.from(records.values())
+        .filter(r => r.name.toLowerCase().includes(filter))
+        .sort((a, b) => {
+          if (sortBy === 'id') return a.id.localeCompare(b.id);
+          if (sortBy === 'name') return a.name.localeCompare(b.name);
+        });
+
+      tableBody.innerHTML = '';
+      for (const record of sortedRecords) {
+        tableBody.innerHTML += `<tr><td>${record.id}</td><td>${record.name}</td></tr>`;
+      }
+    }
+
+    filterInput.addEventListener('input', render);
+    sortSelect.addEventListener('change', render);
+
+    const source = new EventSource('/events');
+
+    source.addEventListener('new', event => {
+      const data = JSON.parse(event.data);
+      records.set(data.id, data);
+      render();
+    });
+
+    source.addEventListener('update', event => {
+      const data = JSON.parse(event.data);
+      records.set(data.id, data);
+      render();
+    });
+
+    source.addEventListener('delete', event => {
+      const data = JSON.parse(event.data);
+      records.delete(data.id);
+      render();
+    });
+
+    source.onerror = err => {
+      console.error("SSE error", err);
+    };
+</script>
+</body>
+</html>
