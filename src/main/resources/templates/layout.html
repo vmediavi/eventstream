@@ -1,0 +1,40 @@
+<!-- layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Page</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav class="sidebar">
+    <div class="logo">Monitoring</div>
+    <button hx-get="/landing" hx-target="#main" hx-swap="innerHTML">Landing</button>
+    <button hx-get="/live" hx-target="#main" hx-swap="innerHTML">Live Data</button>
+    <button hx-get="/graphs" hx-target="#main" hx-swap="innerHTML">Graphs</button>
+    <button hx-get="/edit" hx-target="#main" hx-swap="innerHTML">Edit/Delete</button>
+</nav>
+
+<header>
+    <div id="notifications"></div>
+</header>
+
+<main id="main" hx-get="/landing" hx-trigger="load" hx-swap="innerHTML">
+    <!-- Main content loads here -->
+</main>
+
+<script>
+    function showNotification(message, type = 'info') {
+      const container = document.getElementById('notifications');
+      const note = document.createElement('div');
+      note.className = `toast toast-${type}`;
+      note.textContent = message;
+      container.appendChild(note);
+      setTimeout(() => container.removeChild(note), 3000);
+    }
+</script>
+</body>
+</html>

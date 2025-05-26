@@ -1,0 +1,146 @@
+/* Base Theme */
+:root {
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --accent-color: #ff6f31;
+  --text-color: #e0e0e0;
+  --text-light: #aaa;
+  --border-color: #333;
+  --highlight: #2e2e2e;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Navigation Bar */
+nav {
+  background-color: var(--surface-color);
+  display: flex;
+  align-items: center;
+  padding: 0.75em 1.25em;
+  gap: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+nav button {
+  background: var(--highlight);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+nav button:hover {
+  background: var(--accent-color);
+}
+
+/* Main Layout */
+main {
+  padding: 1.5em;
+  display: grid;
+  gap: 1.5em;
+}
+
+/* Card Style Blocks */
+.content {
+  background-color: var(--surface-color);
+  padding: 1.5em;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--border-color);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--text-color);
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+thead {
+  background-color: var(--highlight);
+}
+
+tbody tr:hover {
+  background-color: #2a2a2a;
+}
+
+/* Input & Select */
+input, select {
+  background: #1c1c1c;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5em;
+  border-radius: 5px;
+  margin: 0.5em 0;
+}
+
+/* Notifications Area */
+#notifications {
+  background-color: var(--surface-color);
+  color: var(--text-light);
+  padding: 0.75em;
+  border-left: 4px solid var(--accent-color);
+  margin-top: 1em;
+  font-size: 0.9em;
+}
+
+/* Toggle Button */
+.dark-toggle {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  background: var(--highlight);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Charts / Data Visual */
+.card {
+  background: var(--surface-color);
+  border-radius: 10px;
+  padding: 1em;
+  box-shadow: 0 0 0 1px var(--border-color);
+}
+
+.metric {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.status-success { color: var(--success); }
+.status-warning { color: var(--warning); }
+.status-danger { color: var(--danger); }
+
+/* Responsive Grid (optional) */
+@media (min-width: 768px) {
+  main {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}

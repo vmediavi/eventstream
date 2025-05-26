@@ -1,0 +1,36 @@
+<!-- graphs.html -->
+<div th:fragment="content">
+    <div class="content">
+        <h2>System Metrics</h2>
+        <canvas id="lineChart" height="120"></canvas>
+
+        <script>
+            const ctx = document.getElementById('lineChart').getContext('2d');
+            new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                datasets: [{
+                  label: 'Requests',
+                  data: [120, 190, 30, 50, 220],
+                  borderColor: 'orange',
+                  borderWidth: 2,
+                  tension: 0.3,
+                  fill: false
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                },
+                responsive: true,
+                plugins: {
+                  legend: { labels: { color: 'white' } }
+                }
+              }
+            });
+        </script>
+    </div>
+</div>
