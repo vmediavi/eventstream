@@ -13,3 +13,8 @@ docker exec -it <kafka-container-id> kafka-console-producer \
 
 Example message:
 {"type":"new", "payload":{"id":"10", "name":"User 10"}}
+
+{"type":"delete", "payload":{"id":"10", "name":"User 10"}}
+
+{"type":"update", "payload":{"id":"10", "name":"User 999"}}
+
