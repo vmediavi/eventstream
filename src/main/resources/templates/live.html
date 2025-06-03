@@ -1,5 +1,4 @@
-<!-- live.html -->
-<div th:fragment="content">
+<div th:fragment="content" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="content">
         <h2>Live Kafka Records</h2>
         <input type="text" id="filterInput" placeholder="Filter by name...">
@@ -11,48 +10,5 @@
             <thead><tr><th>ID</th><th>Name</th></tr></thead>
             <tbody id="tableBody"></tbody>
         </table>
-
-        <script>
-            const tableBody = document.getElementById('tableBody');
-            const filterInput = document.getElementById('filterInput');
-            const sortSelect = document.getElementById('sortSelect');
-
-            const records = new Map();
-
-            function render() {
-              const filter = filterInput.value.toLowerCase();
-              const sortBy = sortSelect.value;
-
-              const sortedRecords = Array.from(records.values())
-                .filter(r => r.name.toLowerCase().includes(filter))
-                .sort((a, b) => sortBy === 'id' ? a.id.localeCompare(b.id) : a.name.localeCompare(b.name));
-
-              tableBody.innerHTML = '';
-              for (const record of sortedRecords) {
-                tableBody.innerHTML += `<tr><td>${record.id}</td><td>${record.name}</td></tr>`;
-              }
-            }
-
-            filterInput.addEventListener('input', render);
-            sortSelect.addEventListener('change', render);
-
-            const source = new EventSource('/events');
-            source.addEventListener('new', event => {
-              const data = JSON.parse(event.data);
-              records.set(data.id, data);
-              render();
-            });
-            source.addEventListener('update', event => {
-              const data = JSON.parse(event.data);
-              records.set(data.id, data);
-              render();
-            });
-            source.addEventListener('delete', event => {
-              const data = JSON.parse(event.data);
-              records.delete(data.id);
-              render();
-            });
-            source.onerror = err => console.error("SSE error", err);
-        </script>
     </div>
 </div>

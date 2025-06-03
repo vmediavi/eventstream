@@ -28,7 +28,6 @@ public class SseController {
                     ServerSentEvent.<Record>builder()
                             .event(evt.type())
                             .data(evt.payload())
-                            .build()))
-                ;
+                            .build()));
     }
 }

@@ -10,11 +10,6 @@ public class ViewController {
         return "layout";
     }
 
-    @GetMapping("/filter")
-    public String filter() {
-        return "filter";
-    }
-
     @GetMapping("/edit")
     public String edit() {
         return "edit";
