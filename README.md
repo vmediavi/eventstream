@@ -18,3 +18,4 @@ Example message:
 
 {"type":"update", "payload":{"id":"10", "name":"User 999"}}
 
+![Uploading image.png…]()
