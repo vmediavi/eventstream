@@ -18,4 +18,4 @@ Example message:
 
 {"type":"update", "payload":{"id":"10", "name":"User 999"}}
 
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/376cd8c9-5847-4565-9ea0-71d837a1887c)
