@@ -1,4 +1,13 @@
 package com.example.eventstream;
 
-public record RecordEvent(String type, Record payload) {}
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.io.Serializable;
+
+public record RecordEvent(    @JsonProperty("type") String type,
+                              @JsonProperty("payload") Record payload) implements Serializable {
+
+
+}
 

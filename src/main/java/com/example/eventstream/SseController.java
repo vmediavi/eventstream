@@ -1,7 +1,7 @@
 package com.example.eventstream;
 
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,10 +10,10 @@ import reactor.core.publisher.Flux;
 @RestController
 public class SseController {
 
-    private final Flux<RecordEvent> kafkaEvents;
+    private final ReactiveKafkaConsumerTemplate<String, RecordEvent> reactiveKafkaConsumer;
 
-    public SseController(Flux<RecordEvent> kafkaEvents) {
-        this.kafkaEvents = kafkaEvents;
+    public SseController(ReactiveKafkaConsumerTemplate<String, RecordEvent> reactiveKafkaConsumer) {
+        this.reactiveKafkaConsumer = reactiveKafkaConsumer;
     }
 
     @GetMapping(value = "/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -24,10 +24,13 @@ public class SseController {
                 ServerSentEvent.<Record>builder().event("new").data(new Record("4","fourth record")).build()
                 )
                 .mergeWith(
-                kafkaEvents.map(evt ->
+                        reactiveKafkaConsumer
+                                .receiveAutoAck()
+                                .map(evt ->
+
                     ServerSentEvent.<Record>builder()
-                            .event(evt.type())
-                            .data(evt.payload())
+                            .event(evt.value().type())
+                            .data(evt.value().payload())
                             .build()));
     }
 }
